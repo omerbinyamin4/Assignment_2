@@ -17,7 +17,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
 
     @Override
     public Integer search(int x) {
-
+        System.out.println("just for VCS");
         Integer low = 0;
         Integer high = lastIndex;
 
