@@ -37,6 +37,8 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
 
     @Override
     public void delete(Integer index) {
+        if(index > lastIndex)
+            //throw new IllegalArgumentException(); // only for tests
         stack.push(arr[index]);
         stack.push(index + arr.length);
         for (int i=index+1; i<arr.length; i++){ //not efficient
@@ -68,7 +70,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     @Override
     public Integer successor(Integer index) {
         Integer output = -1;
-        for (int i = 0; i < arr.length; i++) {
+        for (int i = 0; i < lastIndex+1; i++) {
             if (arr[i] > arr[index]) {
                 if (output == -1 || arr[i] < arr[output])
                     output = i;
@@ -80,10 +82,11 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     @Override
     public Integer predecessor(Integer index) {
         Integer output = -1;
-        for (int i = 0; i < arr.length; i++) {
+        for (int i = 0; i < lastIndex+1; i++) {
             if (arr[i] < arr[index]) {
-                if (output == -1 || arr[i] > arr[output])
+                if (output == -1 || arr[i] > arr[output]) {
                     output = i;
+                }
             }
         }
         return output;
@@ -93,9 +96,9 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     @Override
     public void backtrack() {
         if (!stack.isEmpty()) {
-            int index = (Integer) stack.pop();
+            int index = (Integer)stack.pop();
 
-            if (index > arr.length) {
+            if (index >= arr.length) {
                 index = index - arr.length;
                 int toAddValue = (Integer) stack.pop();
                 for (int i = lastIndex + 1; i > index; i--) //if index>lastIndex just add at arr[index]

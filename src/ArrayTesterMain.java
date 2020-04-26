@@ -40,7 +40,7 @@ public static void main(String [] args)
     Scanner myScanner = new Scanner(System.in);
     
     
-    int typeTest= 0;
+    int typeTest = 0;
     int numTests = 0; 
     
     System.out.println("Press 1 to test sorted array, 2 to test non sorted array");

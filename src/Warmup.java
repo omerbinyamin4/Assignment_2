@@ -11,7 +11,7 @@ public class Warmup {
                    index = index + 1;
                }
 
-            for (int i = 0; i <bk; i = i + 1)
+            for (int i = 0; i < bk; i = i + 1)
                 myStack.pop();
 
             index = (Integer)myStack.pop();
