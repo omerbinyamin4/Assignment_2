@@ -38,7 +38,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     @Override
     public void delete(Integer index) {
         if(index > lastIndex)
-            //throw new IllegalArgumentException(); // only for tests
+            throw new IllegalArgumentException(); // only for tests
         stack.push(arr[index]);
         stack.push(index + arr.length);
         for (int i=index+1; i<arr.length; i++){ //not efficient
@@ -104,6 +104,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
                 for (int i = lastIndex + 1; i > index; i--) //if index>lastIndex just add at arr[index]
                     arr[i] = arr[i - 1];
                 arr[index] = toAddValue;
+                lastIndex++;
             } else
                 lastIndex = lastIndex - 1;
         }

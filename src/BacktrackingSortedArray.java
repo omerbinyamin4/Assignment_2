@@ -39,6 +39,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
         boolean isAdded = false;
         if(lastIndex==-1) {
             arr[0] = x;
+            stack.push(0);
             lastIndex++;
             isAdded = true;
         }
@@ -56,10 +57,11 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
             }
                  if (x < arr[middle]) {
                      if (middle == 0) {
-                         arr[1] = 0;
-                         arr[0] = x;
-                         isAdded = true;
-                         stack.push(middle + 1);
+                         for (int i = lastIndex+1; i > 0 ; i--)
+                             arr[i] = arr [i - 1];
+                             arr[0] = x ;
+                             isAdded = true;
+                         stack.push(0);
                          lastIndex++;
                      }
                      high = middle;
@@ -73,8 +75,10 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
 
     @Override
     public void delete(Integer index) {
+        if(index > lastIndex)
+            throw new IllegalArgumentException(); // only for tests
         stack.push(arr[index]);
-        stack.push(index + arr.length);
+        stack.push(index + arr.length+1);
         for (int i=index+1; i<lastIndex + 1; i++){
             arr[i-1] = arr[i];
         }
@@ -109,10 +113,12 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
             if (index > arr.length) {
                 insert((Integer) stack.pop());
                 stack.pop();
-            } else
-                delete(((Integer) stack.pop()));
-            stack.pop();
-            stack.pop();
+            }
+            if (index < arr.length) {
+                delete(index);
+                stack.pop();
+                stack.pop();
+            }
         }
     }
 
