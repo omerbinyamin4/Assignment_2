@@ -75,7 +75,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     public void delete(Integer index) {
         stack.push(arr[index]);
         stack.push(index + arr.length);
-        for (int i=index+1; i<arr.length; i++){
+        for (int i=index+1; i<lastIndex + 1; i++){
             arr[i-1] = arr[i];
         }
         lastIndex = lastIndex - 1;
