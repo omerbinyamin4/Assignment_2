@@ -46,7 +46,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
         Integer high = lastIndex;
         while (!isAdded){
             Integer middle = (low+high)/2;
-            if (x >= arr[middle] & x <= arr[middle + 1]){
+            if (x >= arr[middle] & (middle+1>lastIndex || x <= arr[middle + 1])){
                 for (int i = lastIndex+1; i > middle+1 ; i--)
                     arr[i] = arr[i-1];
                     arr[middle+1]=x;
@@ -54,8 +54,17 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
                     stack.push(middle+1);
                     lastIndex++;
             }
-            else if (x < arr[middle])
-                high = middle;
+                 if (x < arr[middle]) {
+                     if (middle == 0) {
+                         arr[1] = 0;
+                         arr[0] = x;
+                         isAdded = true;
+                         stack.push(middle + 1);
+                         lastIndex++;
+                     }
+                     high = middle;
+                 }
+
             else
                 low = middle+1;
         }
