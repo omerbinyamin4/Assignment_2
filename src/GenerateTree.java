@@ -139,6 +139,7 @@ public class GenerateTree {
     public String getPreorder(BacktrackingBST.Node node) 
     {  
         String Tmp = ""; 
+        try{
         try{ 
         if(node != null)
         Tmp = Tmp + " "+node.getKey(); 
@@ -152,8 +153,43 @@ public class GenerateTree {
              logInfo.add("getPreOrder Exception! Scanned Till --> " + node + " Exception Stack -" + getStackForException(preOrderException));
              addFinalStateInfoInTable();
         }
+        }catch(StackOverflowError soError){
+            System.out.println("stackOverflow Error ! Scanned Till --> " + node + " Left Child --> " + node.left + " Right Child --> " + node.right +"  Exception.");
+            printNodesThatCauseStackOverflow(); 
+            System.exit(0);
+        }
         return Tmp;
     } 
+   public void printNodesThatCauseStackOverflow()
+    {
+       String               tableInfo = "";
+       BacktrackingBST.Node tempNode; 
+       BacktrackingBST.Node parent;
+       System.out.println("Tree Info  \r\n");
+        for(int i = 0 ; i < treeNodes.size(); i++)
+        {
+            tempNode = treeNodes.get(i);
+            parent   = getParentFieldByReflection(tempNode);
+            
+            if(tempNode != null)
+            tableInfo=tempNode.getKey() + "|";
+            if(parent != null) tableInfo+= "Parent - "    + parent.getKey();
+            else
+            tableInfo+= " Parent: Null";
+            
+            if(tempNode.left != null) tableInfo+= " Left - "+tempNode.left.getKey();
+            else
+            tableInfo+= " Left: Null";
+            
+             if(tempNode.right != null) tableInfo+=" Right - "+tempNode.right.getKey();
+            else
+            tableInfo+= " Right: Null";
+             
+            System.out.println(tableInfo); 
+        }  
+       System.out.println("----------------------------------------"); 
+    }
+     
     /*
     generatesTree - method to generate a fresh tree
     */
@@ -240,6 +276,7 @@ public class GenerateTree {
         }  
         
        afterRetrackOrder = getPreorder(tree.root);
+       logInfo.add("\r\nPreOrder After Retrack ---> " + afterRetrackOrder);
        isRetrackValid = beforeBackTrackOrder.equals(afterRetrackOrder); 
        System.out.println("Before Order :"  + beforeBackTrackOrder + " "+ afterRetrackOrder);
        logInfo.add("\r\nAfter Retracking " + numberDeleteActionsDone+" Actions"); 
@@ -258,6 +295,8 @@ public class GenerateTree {
         System.out.println("Number operations To Delete : " + randNumDeleteOperations);
         numberDeleteActionsDone               = 0;
        
+        String originalTreeOrder       = getPreorder(backtrackTree.getRoot());  
+        logInfo.add("\r\nPreOrder OriginalTree : ---> "  + originalTreeOrder);
         logInfo.add("------------------------\r\nGenerated Before Delete\r\n------------------------\n"); 
         saveTreeStateToLogFile();
           
@@ -281,7 +320,7 @@ public class GenerateTree {
         logInfo.add("------------------------\r\nGenerated Tree After Delete\r\n------------------------\r\n");  
         saveTreeStateToLogFile(); 
         beforeBackTrackOrder     = getPreorder(tree.getRoot());
-        
+        logInfo.add("\r\nPreOrder Before Back Track : ---> "  + beforeBackTrackOrder);
           
         for(int i = 0 ; i < numberDeleteActionsDone; i++)
         logInfo.add("tree.backtrack();");    
@@ -289,9 +328,8 @@ public class GenerateTree {
         for(int i = 0 ; i < numberDeleteActionsDone; i++)
            tree.backtrack();
          
-        String afterBackTrackOrder     = getPreorder(tree.getRoot()         );
-        String originalTreeOrder       = getPreorder(backtrackTree.getRoot()); 
-        
+        String afterBackTrackOrder     = getPreorder(tree.getRoot()         ); 
+        logInfo.add("\r\nPreOrder after Back Track : ---> "  + afterBackTrackOrder); 
         isValidBackTrack = originalTreeOrder.equals(afterBackTrackOrder);
         logInfo.add("------------------------\r\nAfter BackTracking Action\r\n------------------------"); 
         

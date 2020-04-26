@@ -9,41 +9,35 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         this.redoStack = redoStack;
     }
 
+
     public Node getRoot() {
         return root;
     }
 	
     public Node search(int x) {
-        return search_2(root, x);
+        if (root == null)  //for tests
+            return null;
+        else
+            return root.search(x);
     }
 
-    public static Node search_2 (BacktrackingBST.Node node, int x){
-
-        if (node.getKey() == x)
-            return node;
-        else if(x > node.getKey() & node.right != null)
-            return search_2(node.right, x);
-        else if (x < node.getKey() & node.left != null)
-            return search_2(node.left,x);
-
-        return null;
-    }
 
     public void insert(BacktrackingBST.Node z) {
 
         BacktrackingBST.Node toInsert = new BacktrackingBST.Node(z.getKey(), z.getValue());
-        stack.push(toInsert);
+        stack.push(z);
         stack.push(null);
-        insert_2(root, toInsert);
+
+        insert_2(root, z);
 
         if (!redoStack.isEmpty())
             redoStack.clear();
     }
 
-    public static void insert_2(BacktrackingBST.Node curr, BacktrackingBST.Node toInsert){
+    public void insert_2(BacktrackingBST.Node curr, BacktrackingBST.Node toInsert){
 
         if (curr == null)
-            curr = toInsert;
+            root = toInsert;
 
         else if (toInsert.getKey() < curr.getKey()){
             if (curr.left == null) {
@@ -78,26 +72,35 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
             else
                 x.parent.right = null;
         }
-        else if (x.left == null & x.right != null){
+        else if (x. parent != null & x.left == null & x.right != null){
             if (x.parent.getKey() > x.getKey())
                 x.parent.left = x.right;
             else
                 x.parent.right = x.right;
         }
-        else if (x.left != null & x.right == null){
+        else if (x.parent != null & x.left != null & x.right == null){
             if (x.parent.getKey() > x.getKey())
                 x.parent.left = x.left;
             else
                 x.parent.right = x.left;
         }
         else{
-            Node temp = successor(x); //non- static?
+            Node succ = successor(x);
             Node poped = (Node)stack.pop();
-            delete(temp); //non static?
+            delete(succ);
             stack.push(poped);
-            temp.right = x.right;
-            temp.left = x.left;
-            x = temp;
+
+            succ.right = x.right; //replace right child
+            if (x.right != null)
+                x.right.parent = succ;
+
+            succ.left = x.left; //replace left child
+            if (x.left != null)
+                x.left.parent = succ;
+
+            succ.parent = x.parent; //replace parent
+            if (x.parent == null) //in case deleted node is original root
+                root = succ;
         }
 
         if (!redoStack.isEmpty())
@@ -129,11 +132,19 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                 redoStack.push(stack.pop());
             }
             else {
-                if (indicator.parent.getKey() > indicator.getKey())
+                if (indicator.parent == null){
+                    root = indicator;
+                    if (indicator.right!=null)
+                        indicator.right.parent = indicator;
+                    if (indicator.left!=null)
+                        indicator.left.parent = indicator;
+                }
+
+                else if (indicator.parent.getKey() > indicator.getKey())
                     indicator.parent.left = indicator;
                 else
                     indicator.parent.right = indicator;
-                if (indicator.right != null & indicator.left != null)
+                if (indicator.parent == null || indicator.right != null & indicator.left != null)
                     backtrack();
 
                 BacktrackingBST.Node toDelete = new BacktrackingBST.Node(indicator.getKey(), indicator.getValue());
@@ -208,6 +219,17 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
             return value;
         }
 
+        public Node search(int x){
+                if (key == x)
+                    return this;
+                else if (x > key & right != null)
+                    return right.search(x);
+                else if (x < key & left != null)
+                    return left.search(x);
+
+            return null;
+        }
+
         public Node minimum(){
            Node curr = this;
             while (curr.left != null)
@@ -243,6 +265,48 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                 return father;
             }
         }
+
+        @Override
+        public String toString()
+        {
+            return ""+key;
+        }
     }
 
+    public static void main(String[] args) {
+
+
+        Stack backTrackingStack     = new Stack();
+        Stack retrackStack            = new Stack();
+        BacktrackingBST tree = new BacktrackingBST(backTrackingStack, retrackStack);
+        BacktrackingBST.Node node232 = new BacktrackingBST.Node(232,null);
+        tree.insert(node232);
+        BacktrackingBST.Node node715 = new BacktrackingBST.Node(715,null);
+        tree.insert(node715);
+        BacktrackingBST.Node node282 = new BacktrackingBST.Node(282,null);
+        tree.insert(node282);
+
+        tree.print();
+        System.out.println();
+
+        tree.delete(node232);
+
+        tree.print();
+        System.out.println();
+
+        tree.backtrack();
+        tree.print();
+        System.out.println();
+        tree.delete(node715);
+        tree.print();
+        System.out.println();
+        tree.backtrack();
+        tree.print();
+        System.out.println();
+
+
+
+    }
 }
+
+
