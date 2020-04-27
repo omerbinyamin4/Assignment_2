@@ -61,8 +61,8 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
                              arr[i] = arr [i - 1];
                              arr[0] = x ;
                              isAdded = true;
-                         stack.push(0);
-                         lastIndex++;
+                             stack.push(0);
+                             lastIndex++;
                      }
                      high = middle;
                  }
@@ -119,6 +119,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
                 stack.pop();
                 stack.pop();
             }
+            System.out.println("backtracking performed");
         }
     }
 
@@ -132,7 +133,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     public void print() {
         if (lastIndex != -1){
             System.out.print(arr[0]);
-            for (int i = 1; i < arr.length; i++)
+            for (int i = 1; i <= lastIndex; i++)
                 System.out.print(" "+arr[i]);
         }
     }

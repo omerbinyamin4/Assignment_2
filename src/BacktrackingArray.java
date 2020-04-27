@@ -105,9 +105,11 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
                     arr[i] = arr[i - 1];
                 arr[index] = toAddValue;
                 lastIndex++;
-            } else
-                lastIndex = lastIndex - 1;
+            }
+            else{ lastIndex = lastIndex - 1; }
+            System.out.println("backtracking performed");
         }
+
     }
 
     @Override
@@ -119,7 +121,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     public void print() {
         if (lastIndex != -1){
             System.out.print(arr[0]);
-            for (int i = 1; i < arr.length; i++)
+            for (int i = 1; i <= lastIndex; i++)
                 System.out.print(" "+arr[i]);
         }
     }
