@@ -2,7 +2,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     private Stack stack;
     private Stack redoStack;
     BacktrackingBST.Node root = null;
-    private boolean isRetracking = false;
+    private boolean isRetracking = false; //a field we added, being used it 'retrack' method
 
     // Do not change the constructor's signature
     public BacktrackingBST(Stack stack, Stack redoStack) {
@@ -19,7 +19,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         if (root == null)  //for tests
             return null;
         else
-            return root.search(x);
+            return root.search(x); //using method we added to Node class
     }
 
 
@@ -34,7 +34,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
             redoStack.clear();
     }
 
-    public void insert_2(BacktrackingBST.Node curr, BacktrackingBST.Node toInsert){
+    public void insert_2(BacktrackingBST.Node curr, BacktrackingBST.Node toInsert){ //seld- aid method
 
         if (curr == null)
             root = toInsert;
@@ -122,15 +122,11 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         replacer.left = origLeft;
         if (origLeft != null)
             origLeft.parent = replacer;
-        //if (original.left != null)              //??
-            //original.left.parent = replacer;
 
         original.right = replacer.right;
         replacer.right = origRight;
         if (origRight != null)
             origRight.parent = replacer;
-        //if (original.right != null)             //??
-            //original.right.parent = original;
 
         original.parent = replacer.parent;
         replacer.parent = origParent;
@@ -144,19 +140,19 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 
     public Node minimum() {
-        return root.minimum();
+        return root.minimum(); //using method we added to Node class
     }
 
     public Node maximum() {
-        return root.maximum();
+        return root.maximum(); //using method we added to Node class
     }
 
     public Node successor(Node x) {
-        return x.successor();
+        return x.successor(); //using method we added to Node class
     }
 
     public Node predecessor(Node x) {
-        return x.predecessor();
+        return x.predecessor(); //using method we added to Node class
     }
 
     @Override
@@ -181,7 +177,6 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
 
                 else { //case 1 or 2
                     stack.push(poped);
-                    //if (indicator.right == null & indicator.left == null){ //case 1 (leaf)
                     if (indicator.parent == null) { //originally was a root
                         root = indicator;
                         if (indicator.left != null)
@@ -233,8 +228,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                     indicator.parent.left = indicator;
                 else
                     indicator.parent.right = indicator;
-                //if (indicator.right != null & indicator.left != null) //??
-                    //backtrack();
+
             }
         }
         isRetracking = false;
