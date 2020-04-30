@@ -16,7 +16,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     }
 
     @Override
-    public Integer search(int x) {
+    public Integer search(int x) {//binary search
 
         Integer low = 0;
         Integer high = lastIndex;
@@ -35,7 +35,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     }
 
     @Override
-    public void insert(Integer x) {
+    public void insert(Integer x) {//insertion sort
         boolean isAdded = false;
         if(lastIndex==-1) {
             arr[0] = x;
@@ -74,7 +74,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
 
 
     @Override
-    public void delete(Integer index) {
+    public void delete(Integer index) {//move one index backwards all values in the bigger indexes than index
         if(index > lastIndex)
             throw new IllegalArgumentException(); // only for tests
         stack.push(arr[index]);
@@ -106,15 +106,15 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     }
 
     @Override
-    public void backtrack() {
+    public void backtrack() {//if index bigger than array length than delete backtracked action is being else insert
         if (!stack.isEmpty()) {
             int index = (Integer) stack.pop();
 
-            if (index > arr.length) {
+            if (index > arr.length) {//popping the insert function unneeded push
                 insert((Integer) stack.pop());
                 stack.pop();
             }
-            if (index < arr.length) {
+            if (index < arr.length) {//popping the delete function unneeded push
                 delete(index);
                 stack.pop();
                 stack.pop();

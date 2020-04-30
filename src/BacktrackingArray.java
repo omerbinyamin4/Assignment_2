@@ -36,9 +36,9 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     }
 
     @Override
-    public void delete(Integer index) {
+    public void delete(Integer index) {//replacing the value in index with the last value in the array
         if(index > lastIndex)
-            //throw new IllegalArgumentException(); // only for tests
+            throw new IllegalArgumentException(); // only for tests
         stack.push(arr[index]);
         stack.push(index + arr.length);
         arr[index] = arr[lastIndex];
@@ -49,7 +49,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     }
 
     @Override
-    public Integer minimum() {
+    public Integer minimum() {//comparing all values to find min
         Integer minIndex = 0;
         for(int i = 1; i < arr.length; i++){
             if (arr[i] < arr[minIndex])
@@ -59,7 +59,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     }
 
     @Override
-    public Integer maximum() {
+    public Integer maximum() {//comparing all values to find max
         Integer maxIndex = 0;
         for(int i = 1; i < arr.length; i++){
             if (arr[i] > arr[maxIndex])
@@ -69,7 +69,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     }
 
     @Override
-    public Integer successor(Integer index) {
+    public Integer successor(Integer index) {//comparing all values to find successor
         Integer output = -1;
         for (int i = 0; i < lastIndex+1; i++) {
             if (arr[i] > arr[index]) {
@@ -81,7 +81,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     }
 
     @Override
-    public Integer predecessor(Integer index) {
+    public Integer predecessor(Integer index) {//comparing all values to find predecessor
         Integer output = -1;
         for (int i = 0; i < lastIndex+1; i++) {
             if (arr[i] < arr[index]) {
@@ -95,7 +95,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
 
 
     @Override
-    public void backtrack() {
+    public void backtrack() {//if index bigger than array length than delete backtracked action is being else insert
         if (!stack.isEmpty()) {
             int index = (Integer)stack.pop();
 
