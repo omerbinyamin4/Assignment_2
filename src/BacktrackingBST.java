@@ -328,11 +328,6 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
             }
         }
 
-        @Override
-        public String toString()
-        {
-            return ""+key;
-        }
     }
 
 
