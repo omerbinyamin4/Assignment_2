@@ -8,17 +8,16 @@ public class Warmup {
                    if (index == arr.length-1)
                        return -1;
                    myStack.push(index);
-                   index = index + 1;
+                   index = index + 1; //'moving forward' fd times
                }
 
             for (int i = 0; i < bk; i = i + 1)
-                myStack.pop();
+                myStack.pop();                  //'moving backward' bk times
 
-            index = (Integer)myStack.pop();
+            index = (Integer)myStack.pop(); //starting next loop iteration from the index after going backward bk times
         }
 
        return -1;
-
     }
 
     public static int consistentBinSearch(int[] arr, int x, Stack myStack) {
@@ -29,7 +28,7 @@ public class Warmup {
         while (low <= high){
 
             int bk = isConsistent(arr);
-            for (int i = 0 ; i < bk & !myStack.isEmpty(); i = i+1){
+            for (int i = 0 ; i < bk & !myStack.isEmpty(); i = i+1){  //at the end of this loop, stack will contain current low and high after bk times steps back
                 high = (Integer)myStack.pop();
                 low = (Integer)myStack.pop();
             }
@@ -49,7 +48,6 @@ public class Warmup {
 
         return -1;
 
-
     }
 
     private static int isConsistent(int[] arr) {
@@ -61,4 +59,5 @@ public class Warmup {
             return 0;
         }
     }
+
 }

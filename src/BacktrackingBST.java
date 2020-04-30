@@ -2,12 +2,14 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     private Stack stack;
     private Stack redoStack;
     BacktrackingBST.Node root = null;
-    private boolean isRetracking = false; //a field we added, being used it 'retrack' method
+    private boolean isRetracking; //a field we added, being used it 'retrack' method
+
 
     // Do not change the constructor's signature
     public BacktrackingBST(Stack stack, Stack redoStack) {
         this.stack = stack;
         this.redoStack = redoStack;
+        this.isRetracking = false;
     }
 
 
@@ -16,7 +18,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 	
     public Node search(int x) {
-        if (root == null)  //for tests
+        if (root == null)  //empty tree
             return null;
         else
             return root.search(x); //using method we added to Node class
@@ -26,7 +28,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     public void insert(BacktrackingBST.Node z) {
 
         stack.push(z);
-        stack.push(null);
+        stack.push(null); //will differ later between insert and delete
 
         insert_2(root, z);
 
@@ -159,14 +161,14 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     public void backtrack() {
         if (!stack.isEmpty()) {
             Node indicator = (Node) stack.pop();
-            if (indicator == null) { //insert
+            if (indicator == null) { //null indicates we need to backtrack insert
                 delete((Node) stack.pop());
                 redoStack.push(stack.pop());
             }
 
             else { //delete
                 Object poped = stack.pop();
-                if (poped instanceof String) {   //case 3
+                if (poped instanceof String) {   // string indicates last action was case 3 of deletion
                     Node succ = (Node)stack.pop();
                     swap(succ ,indicator);
                     stack.push(succ);
